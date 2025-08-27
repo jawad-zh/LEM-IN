@@ -23,6 +23,6 @@ func ReadFile(FileName string) {
 	}
 	split = strings.Split(Data,"\n")
 	DataRange(split)
-	fmt.Println(split)
-	fmt.Print(len(split))
+	// fmt.Println(split)
+	// fmt.Print(len(split))
 }

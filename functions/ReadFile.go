@@ -21,7 +21,7 @@ func ReadFile(FileName string) {
 		line := scanner.Text()
 		Data += line + "\n"
 	}
-	split = strings.Split(Data,"\n")
+	split = strings.Split(Data, "\n")
 	DataRange(split)
 	// fmt.Println(split)
 	// fmt.Print(len(split))

@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	function "functions/functions"
 	"os"
+
+	function "functions/functions"
 )
 
 func main() {

@@ -28,7 +28,10 @@ func DataRange(data []string) {
 	var Ant int
 	var foundEnd bool
 	var foundStart bool
+	// var lineSearch string
 	links := make(map[string][]string)
+	// test:= make(map[int]string)
+	// var count int
 	for i := 0; i < len(data); i++ {
 		if !strings.HasPrefix(data[i], "#") {
 			Ant = Atoi(data[i])
@@ -91,11 +94,11 @@ func DataRange(data []string) {
 			x = append(x, Atoi(string(InstoredRoom[1])))
 			y = append(y, Atoi(string(InstoredRoom[2])))
 		}
-		}
-		fmt.Print(links)
+	}
 		gra := graph{ant: Ant, start: Start, end: End, links: links}
 		ro := room{name: name, x: x, y: y}
 		Test(gra, ro)
+		fmt.Print(links)
 	
-	}
 
+}

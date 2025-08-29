@@ -4,12 +4,11 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strings"
 )
 
 func ReadFile(FileName string) {
-	var Data string
-	var split []string
+	var Data []string
+	
 	file, err := os.Open(FileName)
 	defer file.Close()
 	if err != nil {
@@ -18,11 +17,11 @@ func ReadFile(FileName string) {
 	}
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		line := scanner.Text()
-		Data += line + "\n"
+		
+		Data = append(Data, scanner.Text())
 	}
-	split = strings.Split(Data, "\n")
-	DataRange(split)
+	
+	DataRange(Data)
 	// fmt.Println(split)
 	// fmt.Print(len(split))
 }

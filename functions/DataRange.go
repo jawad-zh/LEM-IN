@@ -22,13 +22,12 @@ func DataRange(data []string) {
 	// need to organiz
 	var Start string
 	var End string
-	var roomStart int
-	var roomEnd int
 	var name []string
 	var x []int
 	var y []int
-	var index int
 	var Ant int
+	var foundEnd bool
+	var foundStart bool
 	links := make(map[string][]string)
 	for i := 0; i < len(data); i++ {
 		if !strings.HasPrefix(data[i], "#") {
@@ -41,38 +40,34 @@ func DataRange(data []string) {
 		return
 	}
 	for i := 0; i < len(data); i++ {
-		if data[i] == "##start" && i != len(data)-1 {
-			Start = string(data[i+1][0])
-			roomStart = i + 1
-			for j := roomStart; j < len(data); j++ {
-				if data[j] == "##start" {
-					fmt.Println("Invalid Format ducblicated start")
-					return
-				}
-			}
+		if !foundStart && data[i] == "##start" && i != len(data)-1{
+				Start = string(data[i+1][0])
+				foundStart = true
+				continue
 		}
-		if data[i] == "##end" && i != len(data)-1 {
-			End = string(data[i+1][0])
-			roomEnd = i + 1
-			for j := roomEnd; j < len(data); j++ {
-				if data[j] == "##end" {
-					fmt.Println("Invalid Format dublicated end")
-					return
-				}
-			}
+		if !foundEnd && data[i]=="##end" && i != len(data)-1{
+				End= string(data[i][0])
+				foundEnd = true
+				continue
+			
 		}
-		if i != len(data) {
-			index = i + 1
-		} else {
-			index = i
-		}
-		for j := index; j < len(data); j++ {
-			if !strings.HasPrefix(data[j], "#") && data[i] == data[j] {
-				fmt.Println("invalid Format")
+		if (data[i]== "##start"&& foundStart) || (data[i]=="##end"&& foundEnd){
+			fmt.Println("Invalid Format ducblicated Start or End")
 				return
-
-			}
 		}
+		//needed to optimze
+		// if i != len(data) {
+		// 	index = i + 1
+		// } else {
+		// 	index = i
+		// }
+		// for j := index; j < len(data); j++ {
+		// 	if !strings.HasPrefix(data[j], "#") && data[i] == data[j] {
+		// 		fmt.Println("invalid Format")
+		// 		return
+
+		// 	}
+		// }
 		if strings.Contains(data[i], "-") {
 			InStoredLinks := strings.Split(data[i], "-")
 
@@ -80,8 +75,14 @@ func DataRange(data []string) {
 				fmt.Println("Ivalid format of links")
 				return
 			} else {
-				links[InStoredLinks[0]] = append(links[InStoredLinks[0]], InStoredLinks[1])
-				links[InStoredLinks[1]] = append(links[InStoredLinks[1]], InStoredLinks[0])
+				if InStoredLinks[0]!="" && InStoredLinks[1]!=""{
+
+					links[InStoredLinks[0]] = append(links[InStoredLinks[0]], InStoredLinks[1])
+					links[InStoredLinks[1]] = append(links[InStoredLinks[1]], InStoredLinks[0])
+				}else{
+					fmt.Println("Ivalid format of links")
+				return
+				}
 			}
 		}
 		InstoredRoom := strings.Split(data[i], " ")
@@ -90,8 +91,11 @@ func DataRange(data []string) {
 			x = append(x, Atoi(string(InstoredRoom[1])))
 			y = append(y, Atoi(string(InstoredRoom[2])))
 		}
+		}
+		fmt.Print(links)
+		gra := graph{ant: Ant, start: Start, end: End, links: links}
+		ro := room{name: name, x: x, y: y}
+		Test(gra, ro)
+	
 	}
-	gra := graph{ant: Ant, start: Start, end: End, links: links}
-	ro := room{name: name, x: x, y: y}
-	Test(gra, ro)
-}
+

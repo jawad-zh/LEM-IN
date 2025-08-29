@@ -103,8 +103,8 @@ func DataRange(data []string) {
 		fmt.Println("Invalid Format There Is No Start Or End")
 		return
 	}
+	fmt.Print(links)
 	gra := graph{ant: Ant, start: Start, end: End, links: links}
 	ro := room{name: name, x: x, y: y}
-	Test(gra, ro)
-	fmt.Print(links)
+	FoundPath(gra, ro)
 }

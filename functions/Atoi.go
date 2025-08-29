@@ -20,8 +20,6 @@ func Atoi(str string) int {
 
 	for i < n && unicode.IsDigit(rune(str[i])) {
 		digit := int(str[i] - '0')
-
-		// Check for overflow
 		if result > (MaxInt-digit)/10 {
 			if sign == 1 {
 				return MaxInt

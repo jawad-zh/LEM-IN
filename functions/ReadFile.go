@@ -20,6 +20,4 @@ func ReadFile(FileName string) {
 		Data = append(Data, scanner.Text())
 	}
 	DataRange(Data)
-	// fmt.Println(split)
-	// fmt.Print(len(split))
 }

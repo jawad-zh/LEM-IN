@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
+	lemin "lemin/functions"
 	"os"
-
-	function "functions/functions"
 )
 
 func main() {
@@ -12,5 +11,6 @@ func main() {
 		fmt.Println("[USAGE]: go run main.go <DataFileName.txt>")
 		return
 	}
-	function.ReadFile(os.Args[1])
+	lemin.ParsFile(os.Args[1])
+	
 }

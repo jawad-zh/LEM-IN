@@ -1,3 +1,3 @@
-module functions
+module lemin
 
 go 1.22.3

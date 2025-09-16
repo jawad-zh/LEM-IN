@@ -42,14 +42,7 @@ func FoundPath(rooms map[string][]string, start string, end string) [][]string {
 	return group
 }
 
-func visited(neighbor string, room []string) bool {
-	for _, r := range room {
-		if neighbor == r {
-			return true
-		}
-	}
-	return false
-}
+
 
 func reversePath(path []string) []string {
 	reversed := make([]string, len(path))

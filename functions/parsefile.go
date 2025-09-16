@@ -113,6 +113,7 @@ func ParsFile(fileName string) {
 			}
 		}
 	}
-	FoundPath(rooms, start, end)
+	// FoundPath(rooms, start, end)
+	JwFoundPathes(rooms, start, end)
 	fmt.Println("Ants:", numberOfAnts)
 }

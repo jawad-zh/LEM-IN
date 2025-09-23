@@ -6,26 +6,18 @@ func Test(rooms map[string][]string, start, end string) [][]string {
 	var room []string
 	var group [][]string
 	var group2 [][]string
-	// var first bool
 	var children []string
 	children = rooms[start]
-	// fmt.Println(rooms[start])
-	// fmt.Println(len(rooms[start]))
-	// fmt.Println(children)
 	i := 0
 	for i <= len(children)-1 {
 		
 		group = append(group,Bfs(room, children[i], rooms, end)...)
 		group2 = append(group2, group...)
-		
-		// fmt.Println("i:",i)
 		i++
-		// fmt.Println("i++:",i)
 	}
+	group2 = ValidGroup(group2,children)
 	fmt.Println(group2)
-	fmt.Println(len(group2))
-	// fmt.Println("children:",children)
-	return group
+	return group2
 }
 
 func Bfs(room []string, child string, rooms map[string][]string, end string) [][]string {
@@ -45,12 +37,6 @@ func Bfs(room []string, child string, rooms map[string][]string, end string) [][
 		for _, neibors := range rooms[last] {
 			if !visit[neibors] {
 				visit[neibors] = true
-				// if neibors == end {
-				// 	newpath := append([]string{}, room...)
-				// 	newpath = append(newpath, neibors)
-				// 	group = append(queue, newpath)
-				// 	break
-				// }
 				newpath := append([]string{}, room...)
 				newpath = append(newpath, neibors)
 				queue = append(queue, newpath)
@@ -58,4 +44,35 @@ func Bfs(room []string, child string, rooms map[string][]string, end string) [][
 		}
 	}
 	return group
+}
+func ValidGroup(group [][]string,children []string)[][]string{
+	var Result [][]string
+	for i:=0 ; i < len(group); i++{
+		for j:=0 ; j < len(group[i]) ; j++{
+			if !child(children,group[i][j]){
+				for k:=len(group)-1 ; k > 0; k--{
+					for h:= len(group[k])-1; h > 0 ; h--{
+						if group[i][j] == group[k][h]{
+							for n:=0 ;  n < len(group) ; n++{
+								Num:= (len(group))/2
+								if n != k{
+									fmt.Println(group[n:Num])
+									// Result= append(Result, group[n:Num]...)
+								}
+							}
+						}
+					}
+				} 
+			}
+		}
+	}
+	return Result
+}
+func child(children []string,s string)bool{
+	for i:=0 ; i < len(children) ; i++{
+		if s == children[i]{
+			return true 
+		}
+	}
+	return false
 }

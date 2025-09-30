@@ -8,25 +8,24 @@ import (
 	"strings"
 )
 
-type room struct {
-	roomName   string
-	currentAnt int
-	nextAnt    int
-}
-
 type Colony struct {
 	antNumber  int
-	start, end room
-	graph      map[room][]room
+	start, end string
+	room map[string][]int
+	graph      map[string][]string
 }
 
 var colony = Colony{
-	graph: make(map[room][]room),
+	graph: make(map[string][]string),
+	
+}
+var checker = Colony{
+	room : make(map[string][]int),
 }
 
 var fileContenue []string
 
-func ParsFile(fileName string) {
+func ParseFile(fileName string) {
 	file, err := os.Open(fileName)
 	if err != nil {
 		fmt.Println("ERROR: invalid data format")
@@ -35,14 +34,15 @@ func ParsFile(fileName string) {
 	fileBuffer := bufio.NewScanner(file)
 	for fileBuffer.Scan() {
 		line := fileBuffer.Text()
-		if (line == "" || strings.HasPrefix(line, "#")) && !(line == "##start" || line == "##end") {
+		if (line == "" || strings.HasPrefix(line, "#")) && !(strings.TrimSpace(line) == "##start" || strings.TrimSpace(line) == "##end") {
 			continue
 		}
 		fileContenue = append(fileContenue, line)
 	}
+
 	for index, line := range fileContenue {
 		if index == 0 {
-			n, err := strconv.Atoi(line)
+			n, err := strconv.Atoi(strings.TrimSpace(line))
 			if err != nil {
 				fmt.Println("ERROR: invalid data format")
 				os.Exit(1)
@@ -53,8 +53,8 @@ func ParsFile(fileName string) {
 			}
 			colony.antNumber = n
 		} else {
-			if line == "##start" && index != len(fileContenue)-1 {
-				if colony.start.roomName == "" {
+			if strings.TrimSpace(line) == "##start" && index != len(fileContenue)-1 {
+				if colony.start == "" {
 
 					startRoom := strings.Fields(fileContenue[index+1])
 					if len(startRoom) == 3 {
@@ -63,14 +63,14 @@ func ParsFile(fileName string) {
 							fmt.Println("ERROR: invalid data format")
 							os.Exit(1)
 						}
+						// checker.room[startRoom[0]] = append(checker.room[startRoom[0]],x)
 						_, err = strconv.Atoi(startRoom[2])
 						if err != nil {
 							fmt.Println("ERROR: invalid data format")
 							os.Exit(1)
 						}
-						var start room
-						start.roomName=startRoom[0]
-						colony.start = start
+						// checker.room[startRoom[0]] = append(checker.room[startRoom[0]],y)
+						colony.start = startRoom[0]
 					} else {
 						fmt.Println("ERROR: invalid data format")
 						os.Exit(1)
@@ -79,8 +79,8 @@ func ParsFile(fileName string) {
 					fmt.Println("ERROR: invalid data format")
 					os.Exit(1)
 				}
-			} else if line == "##end" && index != len(fileContenue)-1 {
-				if colony.end.roomName == "" {
+			} else if strings.TrimSpace(line) == "##end" && index != len(fileContenue)-1 {
+				if colony.end == "" {
 
 					endRoom := strings.Fields(fileContenue[index+1])
 					if len(endRoom) == 3 {
@@ -89,14 +89,14 @@ func ParsFile(fileName string) {
 							fmt.Println("ERROR: invalid data format")
 							os.Exit(1)
 						}
+						// checker.room[endRoom[0]] = append(checker.room[endRoom[0]],x)
 						_, err = strconv.Atoi(endRoom[2])
 						if err != nil {
 							fmt.Println("ERROR: invalid data format")
 							os.Exit(1)
 						}
-						var end room
-						end.roomName=endRoom[0]
-						colony.end = end
+						// checker.room[endRoom[0]] = append(checker.room[endRoom[0]],y)
+						colony.end = endRoom[0]
 					} else {
 						fmt.Println("ERROR: invalid data format")
 						os.Exit(1)
@@ -106,57 +106,69 @@ func ParsFile(fileName string) {
 					os.Exit(1)
 				}
 			} else if len(strings.Fields(line)) == 3 {
-				roomInfos := strings.Fields(line)
-				_, err := strconv.Atoi(roomInfos[1])
+				room := strings.Fields(line)
+				x, err := strconv.Atoi(room[1])
 				if err != nil {
 					fmt.Println("ERROR: invalid data format")
 					os.Exit(1)
 				}
-				_, err = strconv.Atoi(roomInfos[2])
+				checker.room[room[0]] = append(checker.room[room[0]],x )
+				y, err := strconv.Atoi(room[2])
 				if err != nil {
 					fmt.Println("ERROR: invalid data format")
 					os.Exit(1)
 				}
-				var newRoom room
-				newRoom.roomName = roomInfos[0]
-				if _, alreadyExist := colony.graph[newRoom]; alreadyExist {
+				checker.room[room[0]] = append(checker.room[room[0]],y )
+				if _, alreadyExist := colony.graph[room[0]]; alreadyExist {
 					fmt.Println("ERROR: invalid data format")
 					os.Exit(1)
 				}
-				colony.graph[newRoom] = nil
+				colony.graph[room[0]] = nil
 			} else if links := strings.Split(line, "-"); len(links) == 2 {
-				var firstLinkChecker room
-				firstLinkChecker.roomName = links[0]
-				if _, validRoom := colony.graph[firstLinkChecker]; !validRoom {
+				if _, validRoom := colony.graph[links[0]]; !validRoom {
 					fmt.Println("ERROR: invalid data format")
 					os.Exit(1)
 				}
-				var secondLinkChecker room
-				secondLinkChecker.roomName = links[1]
-				if _, validRoom2 := colony.graph[secondLinkChecker]; !validRoom2 {
+				if _, validRoom2 := colony.graph[links[1]]; !validRoom2 {
 					fmt.Println("ERROR: invalid data format")
 					os.Exit(1)
 				}
-				for _, room := range colony.graph[firstLinkChecker] {
-					if room == secondLinkChecker {
+				for _, room := range colony.graph[links[0]] {
+					if room == links[1] {
 						fmt.Println("ERROR: invalid data format")
 						os.Exit(1)
 					}
 				}
-				colony.graph[firstLinkChecker] = append(colony.graph[firstLinkChecker], secondLinkChecker)
-				for _, room := range colony.graph[secondLinkChecker] {
-					if room == firstLinkChecker {
+				colony.graph[links[0]] = append(colony.graph[links[0]], links[1])
+				for _, room := range colony.graph[links[1]] {
+					if room == links[0] {
 						fmt.Println("ERROR: invalid data format")
 						os.Exit(1)
 					}
 				}
-				colony.graph[secondLinkChecker] = append(colony.graph[secondLinkChecker],firstLinkChecker)
+				colony.graph[links[1]] = append(colony.graph[links[1]], links[0])
 
 			} else {
 				fmt.Println("ERROR: invalid data format")
 				os.Exit(1)
 			}
 		}
+		
 	}
+
+	for room1 := range checker.room {
+		for room2 := range checker.room {
+			if room1 != room2 {
+				if checker.room[room1][0] == checker.room[room2][0] && checker.room[room1][1] == checker.room[room2][1]  {
+					fmt.Println("ERROR: invalid iidata format")
+				os.Exit(1)
+				}
+			}
+		}
+	}
+
+
+
+	// fmt.Println(checker.room)
 	FindAllPaths()
 }

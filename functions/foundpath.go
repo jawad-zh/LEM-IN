@@ -1,5 +1,10 @@
 package lemin
 
+import (
+	"fmt"
+	"os"
+)
+
 var allFoundPaths [][]string
 
 func FindAllPaths() {
@@ -18,6 +23,11 @@ func FindAllPaths() {
 		paths := bfsSearch(index, initialPaths)
 		allFoundPaths = append(allFoundPaths, paths...)
 
+	}
+
+	if len(allFoundPaths) == 0 {
+		fmt.Println("fff")
+		os.Exit(1)
 	}
 
 	GrouppingPaths(allFoundPaths)

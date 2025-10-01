@@ -28,7 +28,7 @@ var fileContenue []string
 func ParseFile(fileName string) {
 	file, err := os.Open(fileName)
 	if err != nil {
-		fmt.Println("ERROR: invalid data format")
+		fmt.Println("ERROR: 11,11,11invalid data format")
 		os.Exit(1)
 	}
 	fileBuffer := bufio.NewScanner(file)
@@ -39,16 +39,20 @@ func ParseFile(fileName string) {
 		}
 		fileContenue = append(fileContenue, line)
 	}
+	if len(fileContenue) == 0{
+		fmt.Println("ERROR: 11,1ddfdfdfdfdfdfinvalid data format")
+		os.Exit(1)
+	}
 
 	for index, line := range fileContenue {
 		if index == 0 {
 			n, err := strconv.Atoi(strings.TrimSpace(line))
 			if err != nil {
-				fmt.Println("ERROR: invalid data format")
+				fmt.Println("ERROR: 10101010invalid data format")
 				os.Exit(1)
 			}
 			if n <= 0 {
-				fmt.Println("ERROR: invalid data format")
+				fmt.Println("ERROR: 9999invalid data format")
 				os.Exit(1)
 			}
 			colony.antNumber = n
@@ -60,23 +64,23 @@ func ParseFile(fileName string) {
 					if len(startRoom) == 3 {
 						_, err := strconv.Atoi(startRoom[1])
 						if err != nil {
-							fmt.Println("ERROR: invalid data format")
+							fmt.Println("ERROR: 88888invalid data format")
 							os.Exit(1)
 						}
 						// checker.room[startRoom[0]] = append(checker.room[startRoom[0]],x)
 						_, err = strconv.Atoi(startRoom[2])
 						if err != nil {
-							fmt.Println("ERROR: invalid data format")
+							fmt.Println("ERROR: 77777invalid data format")
 							os.Exit(1)
 						}
 						// checker.room[startRoom[0]] = append(checker.room[startRoom[0]],y)
 						colony.start = startRoom[0]
 					} else {
-						fmt.Println("ERROR: invalid data format")
+						fmt.Println("ERROR: 66666invalid data format")
 						os.Exit(1)
 					}
 				} else {
-					fmt.Println("ERROR: invalid data format")
+					fmt.Println("ERROR: 5555invalid data format")
 					os.Exit(1)
 				}
 			} else if strings.TrimSpace(line) == "##end" && index != len(fileContenue)-1 {
@@ -86,74 +90,78 @@ func ParseFile(fileName string) {
 					if len(endRoom) == 3 {
 						_, err := strconv.Atoi(endRoom[1])
 						if err != nil {
-							fmt.Println("ERROR: invalid data format")
+							fmt.Println("ERROR: 444invalid data format")
 							os.Exit(1)
 						}
 						// checker.room[endRoom[0]] = append(checker.room[endRoom[0]],x)
 						_, err = strconv.Atoi(endRoom[2])
 						if err != nil {
-							fmt.Println("ERROR: invalid data format")
+							fmt.Println("ERROR: 3333invalid data format")
 							os.Exit(1)
 						}
 						// checker.room[endRoom[0]] = append(checker.room[endRoom[0]],y)
 						colony.end = endRoom[0]
 					} else {
-						fmt.Println("ERROR: invalid data format")
+						fmt.Println("ERROR: 22222invalid data format")
 						os.Exit(1)
 					}
 				} else {
-					fmt.Println("ERROR: invalid data format")
+					fmt.Println("ERROR: i111nvalid data format")
 					os.Exit(1)
 				}
 			} else if len(strings.Fields(line)) == 3 {
 				room := strings.Fields(line)
 				x, err := strconv.Atoi(room[1])
 				if err != nil {
-					fmt.Println("ERROR: invalid data format")
+					fmt.Println("ERROR: gfgdfginvalid data format")
 					os.Exit(1)
 				}
 				checker.room[room[0]] = append(checker.room[room[0]],x )
 				y, err := strconv.Atoi(room[2])
 				if err != nil {
-					fmt.Println("ERROR: invalid data format")
+					fmt.Println("ERROR: hhhhhinvalid data format")
 					os.Exit(1)
 				}
 				checker.room[room[0]] = append(checker.room[room[0]],y )
 				if _, alreadyExist := colony.graph[room[0]]; alreadyExist {
-					fmt.Println("ERROR: invalid data format")
+					fmt.Println("ERROR:ttttt invalid data format")
 					os.Exit(1)
 				}
 				colony.graph[room[0]] = nil
-			} else if links := strings.Split(line, "-"); len(links) == 2 {
+			} else if links := strings.Split(strings.TrimSpace(line), "-"); len(links) == 2 {
 				if _, validRoom := colony.graph[links[0]]; !validRoom {
-					fmt.Println("ERROR: invalid data format")
+					fmt.Println("ERROR: ssssinvalid data format")
 					os.Exit(1)
 				}
 				if _, validRoom2 := colony.graph[links[1]]; !validRoom2 {
-					fmt.Println("ERROR: invalid data format")
+					fmt.Println("ERROR: eeeeinvalid data format")
 					os.Exit(1)
 				}
 				for _, room := range colony.graph[links[0]] {
 					if room == links[1] {
-						fmt.Println("ERROR: invalid data format")
+						fmt.Println("ERROR: ccccinvalid data format")
 						os.Exit(1)
 					}
 				}
 				colony.graph[links[0]] = append(colony.graph[links[0]], links[1])
 				for _, room := range colony.graph[links[1]] {
 					if room == links[0] {
-						fmt.Println("ERROR: invalid data format")
+						fmt.Println("ERROR: invalid bbbbdata format")
 						os.Exit(1)
 					}
 				}
 				colony.graph[links[1]] = append(colony.graph[links[1]], links[0])
 
 			} else {
-				fmt.Println("ERROR: invalid data format")
+				fmt.Println("ERROR: invalid aaadata format")
 				os.Exit(1)
 			}
 		}
 		
+	}
+	if colony.start =="" || colony.end == ""{
+		fmt.Println("ERROR: invalid aadfdfdfdfdffadata format")
+				os.Exit(1)
 	}
 
 	for room1 := range checker.room {

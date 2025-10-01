@@ -1,14 +1,14 @@
 package lemin
 
-type Move struct {
-	antId  int
-	Target []string
-}
+// type Move struct {
+// 	antId  int
+// 	Target []string
+// }
 
-var turns []Move
+// var turns []Move
 
-func Print(paths [][]room) {
+// func Print(paths [][]string) {
 
 	
 
-}
+// }

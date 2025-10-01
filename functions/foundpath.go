@@ -1,16 +1,16 @@
 package lemin
 
-var allFoundPaths [][]room
+var allFoundPaths [][]string
 
 func FindAllPaths() {
-	var initialPaths [][]room
+	var initialPaths [][]string
 	for _, child := range colony.graph[colony.start] {
 		if child == colony.end {
-			newPath := []room{colony.start, colony.end}
+			newPath := []string{colony.start, colony.end}
 			allFoundPaths = append(allFoundPaths, newPath)
 			continue
 		}
-		newPath := append([]room{}, colony.start, child)
+		newPath := append([]string{}, colony.start, child)
 		initialPaths = append(initialPaths, newPath)
 	}
 
@@ -23,13 +23,13 @@ func FindAllPaths() {
 	GrouppingPaths(allFoundPaths)
 }
 
-func bfsSearch(index int, initialPaths [][]room) [][]room {
+func bfsSearch(index int, initialPaths [][]string) [][]string {
 	var count int = 0
-	var visitedHistory  []room
-	paths := [][]room{}
-	queue := [][]room{initialPaths[index]}
-	visited := make(map[room]struct{})
-	relativeVisited := make(map[room][]room)
+	var visitedHistory  []string
+	paths := [][]string{}
+	queue := [][]string{initialPaths[index]}
+	visited := make(map[string]struct{})
+	relativeVisited := make(map[string][]string)
 	visited[initialPaths[index][1]] = struct{}{}
 	for len(queue) > 0 || len(initialPaths)-count> 0 {
 	
@@ -53,7 +53,7 @@ func bfsSearch(index int, initialPaths [][]room) [][]room {
 				continue
 			}
 			if neighbor == colony.end {
-				newPath := append([]room{}, path...)
+				newPath := append([]string{}, path...)
 				newPath = append(newPath, neighbor)
 				paths = append(paths, newPath)
 				visitedHistory = append(visitedHistory, path...)
@@ -67,7 +67,7 @@ func bfsSearch(index int, initialPaths [][]room) [][]room {
 						delete(relativeVisited, r)
 					}
 				}
-				queue = [][]room{}
+				queue = [][]string{}
 				break
 			}
 			if len(colony.graph[last]) == 2 {
@@ -87,7 +87,7 @@ func bfsSearch(index int, initialPaths [][]room) [][]room {
 					}
 					relativeVisited[neighbor] = path
 			}
-				newPath := append([]room{}, path...)
+				newPath := append([]string{}, path...)
 				newPath = append(newPath, neighbor)
 				queue = append(queue, newPath)
 
@@ -98,7 +98,7 @@ func bfsSearch(index int, initialPaths [][]room) [][]room {
 	return paths
 }
 
-func contains(path []room, room room) bool {
+func contains(path []string, room string) bool {
 	for _, r := range path {
 		if r == room {
 			return true

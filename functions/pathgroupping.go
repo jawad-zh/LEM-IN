@@ -1,11 +1,13 @@
 package lemin
 
-func GrouppingPaths(allFoundPaths [][]room) {
-	groupedPathsSets := [][][]room{}
+import "fmt"
+
+func GrouppingPaths(allFoundPaths [][]string) {
+	groupedPathsSets := [][][]string{}
 	for i := 0; i < len(allFoundPaths); i++ {
-		currentGroup := [][]room{allFoundPaths[i]}
+		currentGroup := [][]string{allFoundPaths[i]}
 		for j := 0; j < len(allFoundPaths); j++ {
-			if i == j  {
+			if i == j {
 				continue
 			}
 			hasOverlap := false
@@ -17,6 +19,7 @@ func GrouppingPaths(allFoundPaths [][]room) {
 			}
 			if !hasOverlap {
 				currentGroup = append(currentGroup, allFoundPaths[j])
+				fmt.Println("hdddaaaa",allFoundPaths[j])
 			}
 		}
 		groupedPathsSets = append(groupedPathsSets, currentGroup)
@@ -25,7 +28,8 @@ func GrouppingPaths(allFoundPaths [][]room) {
 	BestGroup(groupedPathsSets)
 }
 
-func overpLap(path1, path2 []room) bool {
+func overpLap(path1, path2 []string) bool {
+	fmt.Println(path1[1 : len(path1)-1])
 	for _, room1 := range path1[1 : len(path1)-1] {
 		for _, room2 := range path2[1 : len(path2)-1] {
 			if room1 == room2 {

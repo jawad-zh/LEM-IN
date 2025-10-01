@@ -1,32 +1,33 @@
 package lemin
 
 import (
+	"fmt"
 	"sort"
 )
 
-func BestGroup(allPathGroups [][][]room) {
+func BestGroup(allPathGroups [][][]string) {
 	var allGroupTurns []int
 	for _, group := range allPathGroups {
 		sort.Slice(group, func(i, j int) bool {
 			return len(group[i]) < len(group[j])
 		})
 	}
-	for _,group :=range allPathGroups {
-		var turnslice,sliceNUmber []int
+	for _, group := range allPathGroups {
+		var turnslice, sliceNUmber []int
 		var turn int
 		antNumber := colony.antNumber
-		for _,path := range group {
+		for _, path := range group {
 			number := len(group[len(group)-1]) - len(path)
 			antNumber -= number
 			sliceNUmber = append(sliceNUmber, number)
 		}
-		
+
 		antsPerPath := antNumber / len(group)
 		overflowAnts := antNumber % len(group)
 
-		for i,path := range group {
-			
-			turn = len(path)+sliceNUmber[i]+antsPerPath-1
+		for i, path := range group {
+
+			turn = len(path) + sliceNUmber[i] + antsPerPath - 1
 			if i < overflowAnts {
 				turn++
 			}
@@ -46,5 +47,5 @@ func BestGroup(allPathGroups [][][]room) {
 		}
 	}
 
-	Print(allPathGroups[index])
+	fmt.Println("just printing", (allPathGroups[index]))
 }

@@ -11,6 +11,6 @@ func main() {
 		fmt.Println("[USAGE]: go run main.go <DataFileName.txt>")
 		return
 	}
-	lemin.ParsFile(os.Args[1])
+	lemin.ParseFile(os.Args[1])
 	
 }
